@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MemberMapper">
+
+	<insert id="join">
+		INSERT INTO MEMBER 
+		(
+			MEMBER_NO
+			, NAME
+			, ID
+			, PWD
+			, PHONE
+		) 
+		VALUES
+		(
+			SEQ_MEMBER_NO.NEXTVAL
+			, #{name}
+			, #{id}
+			, #{pwd}
+			, #{phone}
+		) 
+	</insert>
+	
+	
+	<select id="login" resultType="com.dalmaji.app.member.vo.MemberVo">
+		SELECT
+			MEMBER_NO
+			,NAME
+			,ID
+			,PWD
+			,PHONE
+			,BORROW_PWD
+			,JOIN_DATE
+			,DEL_YN
+		FROM MEMBER
+		WHERE ID = #{id} 
+		AND PWD = #{pwd}
+		AND DEL_YN = 'N'
+	</select>
+
+	<select id="list" resultType="com.dalmaji.app.member.vo.MemberVo">
+		SELECT
+			MEMBER_NO
+			,NAME
+			,ID
+			,PWD
+			,PHONE
+			,BORROW_PWD
+			,JOIN_DATE
+			,DEL_YN
+		FROM MEMBER
+		WHERE DEL_YN = 'N'
+		ORDER BY MEMBER_NO DESC
+	</select>
+	
+	<update id="edit">
+		UPDATE MEMBER 
+			SET 
+			<trim prefixOverrides=",">
+				<if test=" pwd != null and pwd != '' ">
+					PWD = #{pwd}
+				</if>
+				<if test=" phone != null and phone != '' ">
+					,PHONE = #{phone}
+				</if>
+			</trim>
+			WHERE MEMBER_NO = #{memberNo}
+			AND DEL_YN = 'N'
+	</update>
+	
+	<update id="quit">
+	UPDATE MEMBER
+	SET 
+	DEL_YN='Y'
+	WHERE MEMBER_NO = #{memberNo}
+	</update>
+	
+	
+
+</mapper>

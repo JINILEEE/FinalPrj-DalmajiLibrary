@@ -1,0 +1,30 @@
+package com.dalmaji.app.borrow.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.session.RowBounds;
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.stereotype.Repository;
+
+import com.dalmaji.app.borrow.vo.BorrowVo;
+import com.dalmaji.app.page.vo.PageVo;
+
+@Repository
+public class MemberBorrowDao {
+
+	// 대출 리스트 화면
+	public List<BorrowVo> list(SqlSession sst, String memberNo) {
+		
+		int offset = (memberNo.getCurrentPage()-1) * memberNo.getListLimit();   // 몇 개 건너뛸지... 
+		int limit = 8;   // 최대 몇개 보일지...
+		RowBounds rb = new RowBounds(offset, limit);       // 0개를 건너뛰고, 그 다음부터 10개를 조회할 예정...
+		
+		return sst.selectList("MemberBorrowListMapper.list", null, rb);
+	}
+
+	//총 게시글 수 가져오는 메소드
+	public int getTotalCount(SqlSession sst) {
+		return Integer.parseInt(sst.selectOne("MemberBorrowListMapper.count"));
+	}
+
+}

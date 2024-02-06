@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="AdminMapper">
+
+	<insert id="join">
+		INSERT INTO ADMIN 
+		(
+			ADMIN_NO
+            ,NAME
+            ,ID
+            ,PWD
+		) 
+		VALUES
+		(
+			SEQ_ADMIN_NO.NEXTVAL
+			, #{name}
+			, #{id}
+			, #{pwd}
+		) 
+	</insert>
+	
+	
+	<select id="login" resultType="com.dalmaji.app.admin.vo.AdminVo">
+		SELECT
+		    ADMIN_NO
+		    ,NAME
+		    ,ID
+		    ,PWD
+		    ,DEL_YN
+		FROM ADMIN
+		WHERE ID = #{id} 
+		AND PWD = #{pwd}
+		AND DEL_YN = 'N'
+	</select>
+
+	
+	
+	
+
+</mapper>

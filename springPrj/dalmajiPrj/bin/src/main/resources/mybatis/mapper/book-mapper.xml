@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BookMapper">
+
+
+	<select id="list" resultType="com.dalmaji.app.book.vo.BookVo">
+		SELECT
+			L.BOOK_NO
+			,L.BOOK_CATE_NO
+			,L.TITLE
+			,L.AUTHOR
+			,L.COMPANY
+			,L.CONT
+			,TO_CHAR(L.PUBLISHER_YEAR , 'YYYY"년도"') AS PUBLISHER_YEAR
+	        ,S.BOOK_STATE
+		FROM BOOK_LIST L
+		JOIN BOOK_STATUS S ON L.STATUS_NO = S.STATUS_NO
+	</select>
+
+	<select id="detail" resultType="com.dalmaji.app.book.vo.BookVo">
+		SELECT 
+        BOOK_NO
+		,BOOK_CATE_NO
+		,TITLE
+		,AUTHOR
+		,COMPANY
+		,CONT
+		,PUBLISHER_YEAR
+		,BOOK_IMG
+		FROM BOOK_LIST
+		WHERE TITLE = #{title} OR AUTHOR = #{author} OR COMPANY = #{company}
+	</select>
+	
+	<update id="edit">
+	UPDATE BOOK_LIST
+	SET TITLE= #{title}
+	, AUTHOR = #{author}
+	, COMPANY = #{company}
+	WHERE BOOK_NO = #{bookNo}
+	</update>
+	
+	
+
+</mapper>

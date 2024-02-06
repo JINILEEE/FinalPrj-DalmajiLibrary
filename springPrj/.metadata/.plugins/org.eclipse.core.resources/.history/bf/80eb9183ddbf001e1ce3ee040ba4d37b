@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BookMapper">
+
+
+	<select id="list" resultType="com.dalmaji.app.book.vo.BookVo">
+		SELECT
+		BOOK_NO
+		,BOOK_CATE_NO
+		,TITLE
+		,AUTHOR
+		,COMPANY
+		,CONT
+		,TO_CHAR(PUBLISHER_YEAR , 'YYYY"년도"') AS
+		PUBLISHER_YEAR
+		FROM BOOK_LIST
+	</select>
+	
+	<select id="searchList" resultType="com.dalmaji.app.book.vo.BookVo">
+	SELECT
+		BOOK_NO
+		,BOOK_CATE_NO
+		,TITLE
+		,AUTHOR
+		,COMPANY
+		,CONT
+		,TO_CHAR(PUBLISHER_YEAR , 'YYYY"년도"') AS PUBLISHER_YEAR
+	FROM BOOK_LIST
+	WHERE BOOK_CATE_NO = #{bookCateNo}
+	</select>
+	
+	<select id="listSelect" resultType="com.dalmaji.app.book.vo.BookVo">
+		SELECT
+			BOOK_NO
+			,BOOK_CATE_NO
+			,TITLE
+			,AUTHOR
+			,COMPANY
+			,CONT
+			,TO_CHAR(PUBLISHER_YEAR , 'YYYY"년도"') AS PUBLISHER_YEAR
+		FROM BOOK_LIST
+		WHERE BOOK_CATE_NO = #{bookCateNo}
+	</select>
+
+
+
+	<update id="increaseHit">
+		UPDATE BOOK_LIST
+		SET CONT = CONT+1
+		WHERE
+		BOOK_NO = #{bookNo}
+	</update>
+
+
+	<insert id="insert">
+		INSERT INTO BOOK_LIST
+		(
+		BOOK_NO
+		,TITLE
+		,AUTHOR
+		,COMPANY
+		,BOOK_CATE_NO
+		,BOOK_ROOM_NO
+		,PUBLISHER_YEAR
+		,BOOK_IMG
+		)
+		VALUES
+		(
+    	SEQ_BOOK_LIST_NO.NEXTVAL
+		, #{title}
+		, #{author}
+		, #{company}
+		, #{bookCateNo}
+		, #{bookRoomNo}
+		, #{publisherYear}
+		, #{bookImg}
+		)
+	</insert>
+
+
+	<select id="count" resultType="String">
+		SELECT COUNT(*) AS LISTCOUNT
+		FROM
+		BOOK_LIST
+
+	</select>
+
+
+	<select id="detail" resultType="com.dalmaji.app.book.vo.BookVo">
+		SELECT
+			BOOK_NO
+			,BOOK_CATE_NO
+			,TITLE
+			,AUTHOR
+			,COMPANY
+			,CONT
+			,PUBLISHER_YEAR
+			,BOOK_IMG
+		FROM BOOK_LIST
+<!-- 		WHERE 
+			TITLE LIKE '%' || #{title} || '%'
+			AUTHOR LIKE '%' || #{author} || '%' OR
+			COMPANY LIKE '%' || #{company} || '%'
+		 -->
+		WHERE
+		    <if test="title != null and title != ''">
+		        TITLE LIKE '%' || #{title} || '%'
+		    </if>
+		    <if test="author != null and author != ''">
+		        <if test="title != null and title != ''"> 
+		        	OR 
+		        </if>
+		        AUTHOR LIKE '%' || #{author} || '%'
+		    </if>
+		    <if test="company != null and company != ''">
+		        <if test="title != null and title != '' or author != null and author != ''"> 
+		        	OR 
+		        </if>
+		        COMPANY LIKE '%' || #{company} || '%'
+		    </if>
+	</select>
+
+	<delete id="delete" parameterType="String">
+		DELETE BOOK_LIST
+		WHERE BOOK_NO = #{bookNo}
+	</delete>
+
+	<update id="edit">
+		UPDATE BOOK_LIST 
+			SET 
+				TITLE= #{title} 
+				, AUTHOR = #{author} 
+				, COMPANY = #{company} 
+				, BOOK_IMG = #{bookImg}
+				, PUBLISHER_YEAR = #{publisherYear}
+		WHERE BOOK_NO = #{bookNo}
+	</update>
+
+	
+
+</mapper>

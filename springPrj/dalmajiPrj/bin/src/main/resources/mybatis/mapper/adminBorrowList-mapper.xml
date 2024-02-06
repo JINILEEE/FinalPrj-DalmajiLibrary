@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="AdminBorrowListMapper">
+  
+  <select id="list" resultType="com.dalmaji.app.borrow.vo.AdminBorrowVo">
+  	SELECT
+	    O.OVERDUE_NO 
+	    , L.BOOK_NO
+	    , L.TITLE
+	    , L.AUTHOR
+	    , L.COMPANY
+	    , M.MEMBER_NO
+	    , M.NAME
+	    , B.BORROW_DATE
+	    , B.DUE_DATE
+	    , M.OVERDUE_COUNT
+	    , S.BOOK_STATE
+	    , M.BORROW_YN
+	FROM OVERDUE O
+	JOIN BORROW B ON B.BORROW_NO = O.BORROW_NO 
+	JOIN BOOK_STATUS S ON S.STATUS_NO = O.STATUS_NO
+	JOIN BOOK_LIST L ON L.BOOK_NO = B.BOOK_NO
+	JOIN MEMBER M ON M.MEMBER_NO = O.MEMBER_NO
+	WHERE M.DEL_YN = 'N'
+	ORDER BY O.OVERDUE_NO DESC
+  </select>
+  
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MemberBorrowListMapper">
+  
+  <select id="list" resultType="com.dalmaji.app.borrow.vo.BorrowVo">
+  	SELECT
+	    B.BOOK_NO
+	    , L.TITLE
+	    , L.AUTHOR
+	    , L.COMPANY
+	    , M.NAME
+	    , TO_CHAR(B.BORROW_DATE, 'YYYY/MM/DD') BORROW_DATE
+	    , TO_CHAR(B.DUE_DATE, 'YYYY/MM/DD') DUE_DATE
+	    , M.OVERDUE_COUNT
+	    , DECODE (S.BOOK_STATE, '대출가능', '반납완료', '대출중', '대출중', '연체중', '연체중') BOOK_STATE
+	    , BO.B_OPTION
+	    , BO.O_NO
+	FROM BORROW B
+	JOIN BOOK_LIST L ON L.BOOK_NO = B.BOOK_NO
+	JOIN BOOK_STATUS S ON S.STATUS_NO = L.STATUS_NO
+	JOIN (MEMBER M JOIN B_OPTION BO ON BO.O_NO = M.O_NO) ON M.MEMBER_NO = B.MEMBER_NO
+	WHERE M.DEL_YN = 'N'
+	AND M.MEMBER_NO = #{memberNo}
+	ORDER BY B.BORROW_NO DESC
+  </select>
+  
+  <update id="updateBookState">
+  	UPDATE BOOK_LIST 
+	    SET STATUS_NO = '1'
+	WHERE BOOK_NO = #{bookNo}
+  </update>
+  
+  <update id="updateDueDate">
+  	UPDATE BORROW
+	    SET DUE_DATE = SYSDATE
+	WHERE BOOK_NO = #{bookNo}
+  </update>
+  
+  
+</mapper>

@@ -1,0 +1,52 @@
+package com.dalmaji.app.borrow.service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.dalmaji.app.borrow.dao.MemberBorrowDao;
+import com.dalmaji.app.borrow.vo.BorrowVo;
+import com.dalmaji.app.page.vo.PageVo;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class MemberBorrowService {
+	
+	private final SqlSession sst;
+	private final MemberBorrowDao dao;
+
+	// 대출 리스트
+	public List<BorrowVo> list(String memberNo){
+		return dao.list(sst, memberNo);
+	}
+
+	//유저 반납처리
+	public Map<String, Object> returnBook(BorrowVo bvo, String bookNo) {
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		resultMap.put("status", "bad");
+		
+		if(dao.returnBoook(sst, bvo) != null) {
+			
+		}else {
+			resultMap.put("msg", "잘못된 반납처리 입니다.");
+			return resultMap;
+		}
+		log.info("들어온 북넘버::: {}", bookNo);
+		int result = dao.updateBookState(sst, bookNo);
+		log.info("북 상태 업데이트:: {}", result);
+		
+		
+		return null;
+	}
+
+}

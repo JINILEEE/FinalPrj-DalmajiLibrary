@@ -1,0 +1,7 @@
+INDEX VERSION 1.4+/Users/jini/KH_DALMAJI/springPrj/.metadata/.plugins/org.eclipse.wst.jsdt.core/indexes
+168089049.index
+902667576.index
+470006562.index
+524210852.index
+4197586847.index
+2272446937.index

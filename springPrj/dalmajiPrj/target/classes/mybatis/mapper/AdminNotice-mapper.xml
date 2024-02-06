@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="AdminNoticeMapper">
+  
+  <insert id="insert">
+		INSERT INTO NOTICE 
+		(
+			NO
+			, TITLE
+			, CONTENT
+		) 
+		VALUES
+		(
+			SEQ_NOTICE_NO.NEXTVAL
+			, #{title}
+			, #{content}
+		)
+	</insert>
+	
+	<select id="count" resultType="String">
+ 	SELECT COUNT(*) AS LISTCOUNT
+	FROM BORROW B
+	JOIN BOOK_LIST L ON L.BOOK_NO = B.BOOK_NO
+	JOIN BOOK_STATUS S ON S.STATUS_NO = L.STATUS_NO
+	JOIN MEMBER M ON M.MEMBER_NO = B.MEMBER_NO
+	WHERE M.DEL_YN = 'N'
+  	</select>
+	
+	<select id="list" resultType="com.dalmaji.app.notice.vo.AdminNoticeVo">
+		SELECT 
+		    NO
+		    , ADMIN_NO
+		    , TITLE
+		    , TO_CHAR(ENROLL_DATE, 'YYYY.MM.DD') AS ENROLL_DATE
+		    , DEL_YN
+		    , HIT
+		FROM NOTICE
+		WHERE DEL_YN = 'N'
+		ORDER BY NO DESC 
+	</select>
+	
+	<select id="detail" resultType="com.dalmaji.app.notice.vo.AdminNoticeVo">
+		SELECT 
+	        NO
+	        ,ADMIN_NO
+	        ,TITLE
+	        ,CONTENT
+	        , TO_CHAR(ENROLL_DATE, 'YYYY.MM.DD') AS ENROLL_DATE
+	        ,MODIFY_DATE
+	        ,DEL_YN
+	        ,HIT
+	    FROM NOTICE
+	    WHERE NO = #{no}
+	    AND DEL_YN = 'N'
+	    ORDER BY NO DESC
+	</select>
+	
+	<select id="search" resultType="com.dalmaji.app.notice.vo.AdminNoticeVo">
+		SELECT 
+			NO, 
+			TITLE, 
+			TO_CHAR(ENROLL_DATE, 'YYYY.MM.DD') AS ENROLL_DATE 
+		FROM NOTICE 
+		WHERE DEL_YN = 'N' 
+		AND TITLE LIKE '%' || #{title} || '%' 
+		ORDER BY NO DESC
+	</select>
+	
+	
+	<update id="hit" >
+		UPDATE NOTICE
+    SET HIT = HIT+1
+    WHERE NO = #{no}
+	</update>
+	
+	<update id="delete">
+		UPDATE NOTICE
+    		SET DEL_YN = 'Y'
+		WHERE NO = #{no}
+	</update>
+	
+	<update id="edit">
+		UPDATE NOTICE
+			SET
+			<trim prefixOverrides=",">
+				<if test=" title != null and title != '' ">
+					TITLE = #{title}
+				</if>
+				<if test=" content != null and content != '' ">
+					, CONTENT = #{content}
+				</if>
+			</trim> 
+			WHERE NO = #{no}
+			AND DEL_YN = 'N'
+	</update>
+  
+</mapper>
