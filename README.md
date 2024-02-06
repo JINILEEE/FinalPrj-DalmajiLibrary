@@ -1,4 +1,4 @@
-# Dalmaji_Library
+# DalmajiLibrary
 
 ## 팀명 - 이 책 좀 9해조
 
