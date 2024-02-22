@@ -92,9 +92,7 @@
 
 <h3>Development Environment</h3>
 
-<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white">
-<img alt="VSCode" src ="https://img.shields.io/badge/VSCODE-007ACC.svg?&style=for-the-badge&logo=VisualStudioCode&logoColor=white"/>
-<img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
+<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white"> <img alt="VSCode" src ="https://img.shields.io/badge/VSCODE-007ACC.svg?&style=for-the-badge&logo=VisualStudioCode&logoColor=white"/> <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
 
 
 <h3>Tools</h3>
