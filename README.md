@@ -30,7 +30,7 @@
         <tr>
             <td style="text-align: center"><span>Contributions</span></td>
             <td style="text-align: center">
-                <span>홈 화면 구현</span><br>
+                <span>메인 화면 구현</span><br>
                 <span>도서 상세페이지 구현</span><br>
                 <span>도서 대출기능 구현</span><br>
                 <span>마이페이지의 내 서재 구현</span><br>
